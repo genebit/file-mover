@@ -8,33 +8,24 @@ from watchdog.events import FileSystemEventHandler
 class MyHandler(FileSystemEventHandler):
     
     def on_any_event(self, event):
-        print('Changes to the directory detected')
-        for file in os.listdir(downloads_folder):
-            name, extension = os.path.splitext(file)
-            absolute_path = (downloads_folder + name + extension)
+        print(event)
+        # for file in os.listdir(directory_to_track):
+        #     name, extension = os.path.splitext(file)
+        #     absolute_path = (directory_to_track + name + extension)
             
-            # Folder for each extension
-            txt_folder = '.txt/'
-    
-            if extension == '.txt':
-                print('Moving {0} in the txt folder'.format(file))
-                shutil.move(absolute_path, destination_folder + txt_folder)
+            # print('Moving {0} in the txt folder'.format(file))
+            # shutil.move(absolute_path, destination_folder + txt_folder)
 
-            elif extension != '.ini':
-                print('There are no files to move yet')
-
-
-downloads_folder = 'C:/Users/Gene/Downloads/'
-destination_folder = './dest/'
+directory_to_track = 'C:/Users/Gene/Downloads/'
 
 event_handler = MyHandler()
 observer = Observer()
-observer.schedule(event_handler, downloads_folder, recursive=True)
+observer.schedule(event_handler, directory_to_track, recursive=True)
 observer.start()
 
 try:
     while True:
-        time.sleep(5) 
+        time.sleep(2) 
 except KeyboardInterrupt:
     observer.stop()
 observer.join()
